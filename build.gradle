@@ -22,6 +22,13 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    compileOnly {
+        // 프로젝트를 빌드할 때 그래들이 설정 프로세서를 사용하도록 설정
+        extendsFrom annotationProcessor
+    }
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -29,8 +36,14 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 }
 
 test {
     useJUnitPlatform()
+}
+
+bootRun {
+    systemProperty 'spring.profiles.active', 'testdata'
 }
