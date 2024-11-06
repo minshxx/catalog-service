@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.3.4'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+group = 'com.polarbookshop'
+version = '1.0-SNAPSHOT'
+
+// 프로젝트 빌드시 사용할 자바 버전
+compileJava {
+    sourceCompatibility = 19
+    targetCompatibility = 19
+}
+// 테스트 코드 빌드시 사용할 자바 버전
+compileTestJava {
+    sourceCompatibility = 19
+    targetCompatibility = 19
+}
+
+// 의존 라이브러리를 검색할 아티팩트 저장소
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+    useJUnitPlatform()
+}
