@@ -7,5 +7,18 @@ server:
       max: 50
       min-spare: 5
 
+spring:
+  application:
+    # 설정 서버에서 설정을 필터링하는데 사용하는 어플리케이션의 이름
+    name: catalog-service
+  config:
+    # 가능하면 컨피그서버에서 설정데이터를 가져온다.
+    # 서비스가 시작될때 설정 서버가 실행되고 있지 않을 경우 어플리케이션의 로드를 중지하지 않음.
+    import: "optional:configserver:"
+  cloud:
+    config:
+      # 설정서버의 URL
+      uri: http://localhost:8888
+
 polar:
   greeting: Welcome to the local book catalog!
