@@ -19,6 +19,29 @@ spring:
     config:
       # 설정서버의 URL
       uri: http://localhost:8888
+      # 설정 서버에 연결될 때까지 기다리는 시간(ms)
+      request-connect-timeout: 5000
+      # 설정 서버에서 데이터를 읽을 때까지 기다리는 시간(ms)
+      request-read-timeout: 5000
+      # 설정 서버 연결 실패를 치명적 오류로 인식
+      fail-fast: true
+      # 설정 서버와의 연결 실패시 재시도 패턴(최종적 실패로 판단하기 전에 연결을 몇 번 더 시도하도록 설정)
+      retry:
+        # 최대 시도 횟수
+        max-attempts: 6
+        # 최초 재시도 지연 시간(ms)
+        initial-interval: 1000
+        # 재시도 지연 최대 시간(ms)
+        max-interval: 2000
+        # 지연시간 계산 승수
+        multiplier: 1.1
+
+management:
+  endpoints:
+    web:
+      exposure:
+        # HTTP를 통해 /actuator/refresh 엔드포인트를 노출(http://host:port/actuator/refresh POST 호출)
+        include: refresh
 
 polar:
   greeting: Welcome to the local book catalog!
