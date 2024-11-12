@@ -41,8 +41,7 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
     implementation 'org.springframework.retry:spring-retry'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-    implementation 'org.springframework.data:spring-data-commons'
+    implementation 'org.springframework.data:spring-data-jdbc'
 
     runtimeOnly 'org.postgresql:postgresql'
 
