@@ -1,67 +1,60 @@
-buildscript {
-    ext {
-        springCloudVersion = "2023.0.3"
-    }
-}
-
 plugins {
+    id 'org.springframework.boot' version '2.7.18'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'java'
-    id 'org.springframework.boot' version '3.3.4'
-    id 'io.spring.dependency-management' version '1.1.4'
 }
+
 group = 'com.polarbookshop'
-version = '1.0-SNAPSHOT'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
 
-// 프로젝트 빌드시 사용할 자바 버전
-compileJava {
-    sourceCompatibility = 19
-    targetCompatibility = 19
-}
-// 테스트 코드 빌드시 사용할 자바 버전
-compileTestJava {
-    sourceCompatibility = 19
-    targetCompatibility = 19
-}
-
-// 의존 라이브러리를 검색할 아티팩트 저장소
-repositories {
-    mavenCentral()
-}
+description = 'Provides functionality for managing the books in the catalog.'
 
 configurations {
     compileOnly {
-        // 프로젝트를 빌드할 때 그래들이 설정 프로세서를 사용하도록 설정
         extendsFrom annotationProcessor
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('springCloudVersion', "2021.0.9")
+    // 테스트 컨테이너 모듈 버전
+    set('testcontainersVersion', "1.19.8")
+}
+
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
     implementation 'org.springframework.retry:spring-retry'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.springframework.data:spring-data-jdbc'
 
     runtimeOnly 'org.postgresql:postgresql'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
+    // postgresql에 대한 테스트 컨테이너
+    testImplementation 'org.testcontainers:postgresql'
 }
 
 dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        // 테스트 컨테이너 의존성 관리를 위한 Bom
+        mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
     }
-}
-
-test {
-    useJUnitPlatform()
 }
 
 bootRun {
     systemProperty 'spring.profiles.active', 'testdata'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
 }

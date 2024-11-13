@@ -1,0 +1,6 @@
+# integration profile은 기본 속성보다 우선순위를 가진다
+
+spring:
+  database:
+    # 테스트 컨테이너에서 사용할 postgresql 버전
+    url: jdbc:tc:postgresql:14.4:///
