@@ -15,7 +15,7 @@ jobs:
         uses: actions/setup-java@v3   # 자바 런타임을 설치하고 설정한다
         with:
           distribution: temurin
-          java-version: 19
+          java-version: 17
           cache: gradle
       - name: Code vulnerability scanning
         uses: anchore/scan-action@v3  # 그라이프를 사용해 취약성을 스캔한다
