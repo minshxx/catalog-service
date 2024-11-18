@@ -1,4 +1,5 @@
 # integration profile은 기본 속성보다 우선순위를 가진다
+# integration profile이 활성화되면 스프링부트는 테스트 컨테이너에서 인스턴스로 만든 PostgreSQL컨테이너를 사용
 
 spring:
   database:

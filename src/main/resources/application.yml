@@ -47,9 +47,10 @@ spring:
       # Hikari CP가 풀에 최대한으로 유지할 수 있는 연결 객체의 수
       maximum-pool-size: 5
   # 어플리케이션 로드 시 DB에 테이블 생성 명시
-  sql:
-    init:
-      mode: always
+  # flyway사용으로 미사용
+#  sql:
+#    init:
+#      mode: always
 
 # actuator 설정
 management:

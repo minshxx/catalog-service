@@ -1,9 +1,6 @@
 package com.polarbookshop.catalogservice.domain;
 
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.Version;
+import org.springframework.data.annotation.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -33,11 +30,11 @@ public record Book(
         Double price,
 
         // 엔티티 생성 Audit
-        @CreatedBy
+        @CreatedDate
         Instant createdDate,
 
         // 엔티티 수정 Audit
-        @LastModifiedBy
+        @LastModifiedDate
         Instant lastModifiedDate,
 
         /** Optimistic Locking을 위해 사용되는 엔티티 버전 번호
