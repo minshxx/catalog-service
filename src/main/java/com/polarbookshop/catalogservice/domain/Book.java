@@ -29,6 +29,9 @@ public record Book(
         @Positive(message = "The book price must be greater than zero")
         Double price,
 
+        // V2 - 새로 추가한 선택적 필드
+        String publisher,
+
         // 엔티티 생성 Audit
         @CreatedDate
         Instant createdDate,
@@ -51,7 +54,7 @@ public record Book(
          * id가 null 이고 버전이 0이면 새로운 엔티티로 인식한다.
          * audit항목은 spring data가 자동으로 지정
          * */
-        public static Book of(String isbn, String title, String author, Double price) {
-                return new Book(null, isbn, title, author, price, null, null, 0);
+        public static Book of(String isbn, String title, String author, Double price, String publisher) {
+                return new Book(null, isbn, title, author, price, publisher, null, null, 0);
         }
 }
