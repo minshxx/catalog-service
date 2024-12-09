@@ -4,4 +4,4 @@
 spring:
   database:
     # 테스트 컨테이너에서 사용할 postgresql 버전
-    url: jdbc:tc:postgresql:14.4:///
+    url: jdbc:tc:postgresql:14.12:///

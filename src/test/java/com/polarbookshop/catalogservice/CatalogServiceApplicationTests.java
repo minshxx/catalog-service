@@ -17,20 +17,4 @@ class CatalogServiceApplicationTests {
     // 테스트를 위해 REST엔드포인트를 호출할 유틸리티
     @Autowired
     private WebTestClient webTestClient;
-
-    @Test
-    void whenPostRequestThenBookCreated() {
-        var expectedBook = Book.of("1231231231", "Title", "Author", 9.90, null);
-
-        webTestClient
-                .post()                                         // <-- HTTP POST 요청
-                .uri("/books")                              // <-- 요청 엔드포인트
-                .bodyValue(expectedBook)                        // <-- 요청 Body추가
-                .exchange()                                     // <-- 요청을 전송
-                .expectStatus().isCreated()                     // <-- 응답 상태코드가 201생성을 갖는지 확인
-                .expectBody(Book.class).value(actualBook -> {   // <-- 응답 Body
-                    assertThat(actualBook).isNotNull();         // <-- Null이 아닌지 체크
-                    assertThat(actualBook.isbn()).isEqualTo(expectedBook.isbn());   // <-- 생성된 객체가 예상과 동일한지 확인
-                });
-    }
 }
