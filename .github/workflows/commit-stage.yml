@@ -49,8 +49,8 @@ jobs:
   # 작업의 고유 식발자
   package:
     name: Package and Publish
-    # 작업을 main브랜치에 대해서만 실행
-    if: ${{ github.ref == 'refs/heads/main' }}
+    # 작업을 master브랜치에 대해서만 실행
+    if: ${{ github.ref == 'refs/heads/master' }}
     # build 작업이 성공적으로 수행된 경우에만 이 작업을 수행
     needs: [ build ]
     # ubuntu22.04에서 작업을 실행
