@@ -1,8 +1,17 @@
 name: Commit Stage  # 워크플로우의 이름
 on: push            # 워크플로우의 시작 트리거: 저장소로 push
 
+env:
+  # 깃허브 컨테어니 저장소를 사용
+  REGISTRY: ghcr.io
+  # 이미지의 이름
+  IMAGE_NAME: minshxx/catalog-service
+  VERSION: latest
+
+
 jobs:
-  build:  # 작업의 고유 식별자
+  # 작업의 고유 식별자
+  build:
     name: Build and Test  # 작업 명칭
     runs-on: ubuntu-22.04 # 작업이 실행될 머신의 유형
     permissions:          # 작업에 부여된 권한
@@ -36,3 +45,66 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew build
+
+  # 작업의 고유 식발자
+  package:
+    name: Package and Publish
+    # 작업을 main브랜치에 대해서만 실행
+    if: ${{ github.ref == 'refs/heads/main' }}
+    # build 작업이 성공적으로 수행된 경우에만 이 작업을 수행
+    needs: [ build ]
+    # ubuntu22.04에서 작업을 실행
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read  # 현재 깃 저장소를 체크아웃하기 위한 권한
+      packages: write # 깃허브 컨테이너 저장소로 이미지를 업로드하기 위한 권한
+      security-events: write # 깃허브 보안 이벤트를 제출할기 위한 권한
+    steps:
+      # 현재 깃 저장소(catalog-service)를 체크아웃
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      # 자바 런터임을 설치하고 설정
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+
+      # 컨테이너 이미지를 빌드하고 릴리즈 후보를 위한 이름을 정의하기 위해 스프링 부트의 빌드팩 통합을 사용
+      - name: Build container image
+        run: |
+          chmod +x gradlew
+          ./gradlew bootBuildImage \
+            --imageName ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+
+      # 취약성 검사를 위해 그라이프를 사용해 릴리즈 후보 이미지를 스캔
+      - name: OCI image vulnerability scanning
+        uses: anchore/scan-action@v3
+        id: scan
+        with: # 스캔할 이미지
+          image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+          fail-build: false # 취약점이 발견되더라도 빌드 실패 x
+          severity-cutoff: high
+          acs-report-enable: true
+
+      # 깃허브 취약성 리포트를 업로드(sarif형식)
+      - name: Upload vulnerability report
+        uses: github/codeql-action/upload-sarif@v2
+        if: success() || failure()
+        with:
+          sarif_file: ${{ steps.scan.outputs.sarif }}
+
+      # 깃허브 컨테이너 저장소와 인증
+      - name: Log into container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }} # 저장소 정보
+          username: ${{ github.actor }} # 깃허브 액션이 제공하는 현재 사용자의 깃허브 유저명
+          password: ${{ secrets.GITHUB_TOKEN }} # 저장소와 인증하기 위해 필요한 토큰, 깃허브 액션이 제공
+
+      # 릴리즈 후보를 저장소로 푸시
+      - name: Publish container image
+        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+
