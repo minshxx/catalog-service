@@ -23,8 +23,8 @@ spring:
       request-connect-timeout: 5000
       # 설정 서버에서 데이터를 읽을 때까지 기다리는 시간(ms)
       request-read-timeout: 5000
-      # 설정 서버 연결 실패를 치명적 오류로 인식
-      fail-fast: true
+      # 설정 서버 연결 실패를 치명적 오류로 인식(프로덕션 환경에서는 true로 설정할 것)
+      fail-fast: false
       # 설정 서버와의 연결 실패시 재시도 패턴(최종적 실패로 판단하기 전에 연결을 몇 번 더 시도하도록 설정)
       retry:
         # 최대 시도 횟수
