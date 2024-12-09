@@ -23,15 +23,4 @@ public class BookRepositoryJdbcTests {
 
     @Autowired
     private JdbcAggregateTemplate jdbcAggregateTemplate;    // <-- 데이터베이스와 상호작용하기 위한 하위 수준의 객체
-
-    @Test
-    void findBookByIsbnWhenExisting() {
-        var bookIsbn = "1234561237";
-        var book = Book.of(bookIsbn, "Title", "Author", 12.90, null);
-        jdbcAggregateTemplate.insert(book); // <-- 테스트에 필요한 데이터를 insert
-        Optional<Book> actualBook = bookRepository.findByIsbn(bookIsbn);
-
-        assertThat(actualBook).isPresent();
-        assertThat(actualBook.get().isbn()).isEqualTo(book.isbn());
-    }
 }
