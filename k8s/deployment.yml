@@ -8,6 +8,7 @@ metadata:
     app: catalog-service # 이 배포는 "app=catalog-service"라는 label을 갖는다.
 
 spec:
+  replicas: 2 # 몇개의 파드 복제본을 배포할 것인지 설정
   # 확장할 파드를 선택하기 위해 사용할 label
   selector:
     matchLabels:
@@ -23,6 +24,10 @@ spec:
       - name: catalog-service # 파드 이름
         image: catalog-service # 컨테이너를 실행하기 위해 사용할 이미지/태그가 정의되지 않으면 lastest가 암묵적으로 사용됨
         imagePullPolicy: IfNotPresent # 이미지가 로컬에 없는 경우에만 컨테이너 저장소에서 이미지를 다운받음
+        lifecycle:
+          preStop:
+            exec:
+              command: [ "sh", "-c", "sleep 5" ]  # SIGTERM 신호 5초 지연
         ports:
           - containerPort: 9001 # 컨테이너에 의해 노출되는 포트
         # 파드로 전달되는 환경변수
