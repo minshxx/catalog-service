@@ -1,0 +1,11 @@
+server:
+  port: 9001
+  tomcat:
+    # 클라이언트에서 TCP연결을 수락하고 실제 HTTP요청을 받기따지 Tomcat이 기다리는 시간. 서비스 거부 공격(denial-of-service attack, Dos Attack)을 방지.
+    connection-timeout: 2s
+    # 새로운 HTTP요청을 기다리는 동안 연결을 유지하는 시간
+    keep-alive-timeout: 15s
+    # Tomcat은 요청당 스레드 모델에 따라 요청을 처리하는 Thread Pool을 가지고 있으며 사용 가능한 Thread수에 따라 최대로 동시에 처리할 수 있는 요청의 수가 결정됨.
+    threads:
+      max: 50       # 최대 요청 처리 Thread 수
+      min-spare: 5  # Thread Pool에 항상 유지해야하는 최소의 스레드 수

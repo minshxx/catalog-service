@@ -1,0 +1,28 @@
+plugins {
+    id 'org.springframework.boot' version '2.7.3'   // <-- 그래들에서 스프링 부트의 지원을 제공하고 사용할 버전을 선언
+    id 'io.spring.dependency-management' version '1.0.13.RELEASE'   // <-- 스프링에 대한 의존성 관리기능을 제공
+    id 'java'   // <-- 애플리케이션의 컴파일, 빌드, 테스트 작업을 수립하고 그래들에 자바 지원을 제공
+}
+
+group = 'com.polarbookshop'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'  // <-- 프로젝트 빌드 시 사용할 자바 버전
+
+repositories {  // <-- 의존 라이브러리를 검색할 아티팩트 저장소
+    mavenCentral()
+}
+
+dependencies {  // <-- 애플리케이션에 의해 사용될 의존 라이브러리
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
+    testImplementation 'io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()  // <-- JUnit5가 제공하는 JUnit플랫폼으로 테스트하도록 설정
+}
