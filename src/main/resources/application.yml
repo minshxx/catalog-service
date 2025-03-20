@@ -9,3 +9,6 @@ server:
     threads:
       max: 50       # 최대 요청 처리 Thread 수
       min-spare: 5  # Thread Pool에 항상 유지해야하는 최소의 스레드 수
+
+polar:
+  greeting: Welcome to the local book catalog!

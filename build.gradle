@@ -12,11 +12,18 @@ repositories {  // <-- 의존 라이브러리를 검색할 아티팩트 저장�
     mavenCentral()
 }
 
+configurations {
+    compileJava {
+        extendsFrom annotationProcessor
+    }
+}
+
 dependencies {  // <-- 애플리케이션에 의해 사용될 의존 라이브러리
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
@@ -25,4 +32,8 @@ dependencies {  // <-- 애플리케이션에 의해 사용될 의존 라이브�
 
 tasks.named('test') {
     useJUnitPlatform()  // <-- JUnit5가 제공하는 JUnit플랫폼으로 테스트하도록 설정
+}
+
+bootRun {
+    systemProperty 'spring.profiles.active', 'testdata'
 }
