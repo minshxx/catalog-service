@@ -20,7 +20,7 @@ spring:
       uri: http://localhost:8888
       request-connect-timeout: 5000 # 설정 서버에 연결될때 까지 대기 시간(ms)
       request-read-timeout: 5000    # 설정 서버에서 설정데이터를 읽을 때까지 대기 시간(ms)
-      fail-fast: ture               # 설정 서버 연결 실패를 치명적 오류로 인식
+      fail-fast: false              # 설정 서버 연결 실패를 치명적 오류로 인식
       retry:
         max-attempts: 6             # 재시도 최대 횟수
         initial-interval: 1000      # 최초 재시도 지연 시간(ms)
