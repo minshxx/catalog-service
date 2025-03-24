@@ -18,9 +18,17 @@ configurations {
     }
 }
 
+ext {
+    set('springCloudVersion', "2021.0.3")
+}
+
 dependencies {  // <-- 애플리케이션에 의해 사용될 의존 라이브러리
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    implementation 'org.springframework.retry:spring-retry' // <-- config-service에 연결 재시도를 설정할 수 있는 라이브러리.
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
@@ -30,10 +38,16 @@ dependencies {  // <-- 애플리케이션에 의해 사용될 의존 라이브�
     testImplementation 'io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64'
 }
 
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
 tasks.named('test') {
     useJUnitPlatform()  // <-- JUnit5가 제공하는 JUnit플랫폼으로 테스트하도록 설정
 }
 
-bootRun {
+tasks.named("bootRun") {
     systemProperty 'spring.profiles.active', 'testdata'
 }
